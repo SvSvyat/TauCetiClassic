@@ -231,13 +231,25 @@
 /obj/item/clothing/shoes/heels
 	name = "Heels"
 	icon_state = "high_shoes"
-	slowdown = SHOES_SLOWDOWN + 0.5
 	force = 3.5
 	attack_verb = list("stabbed")
+	stab_eyes = TRUE
 	// It's a stab sound.
 	hitsound = list('sound/items/tools/screwdriver-stab.ogg')
 
-	stab_eyes = TRUE
+/obj/item/clothing/shoes/heels/atom_init()
+	. = ..()
+	set_slow()
+
+/obj/item/clothing/shoes/heels/equipped(mob/user, slot)
+	if(slot == SLOT_SHOES)
+		set_slow(user)
+
+/obj/item/clothing/shoes/heels/proc/set_slow(mob/user)
+	if(HAS_TRAIT(user, TRAIT_LIGHT_STEP))
+		slowdown = SHOES_SLOWDOWN
+	else
+		slowdown = SHOES_SLOWDOWN + 0.5
 
 /obj/item/clothing/shoes/heels/alternate
 	icon_state = "high_shoes2"
